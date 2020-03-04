@@ -1,11 +1,23 @@
-Jenkinsfile (Declarative Pipeline)
 pipeline {
-    agent { docker { image 'maven:3.3.3' } }
+    agent any
+     tools {
+        maven 'm3'                                            #Указываем профиль мавена, созданный ранее
+    }
     stages {
-        stage('build') {
+        stage ('git') {
             steps {
-                sh 'mvn --version'
+                git 'https://github.com/elronium/boxfuse.git' #Указываем гит и репозиторий
             }
         }
+        stage ('build') {
+            steps {
+                sh 'mvn package'                              #Запускаем сборку мавеном ранее скачанного репозитория
+            }
+        }
+         stage ('deploy') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: 'd8e9ba3f-31ab-44be-9bfd-fe3ca9c9c495', path: '', url: 'http://104.198.30.248:8080/mywebapp/')], contextPath: null, war: '**/*war'
+            }
+        }
+       
     }
-}
