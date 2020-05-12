@@ -17,7 +17,7 @@ pipeline {
          stage ('deploy') {
             steps {
                 deploy adapters: [tomcat8(credentialsId: 'd8e9ba3f-31ab-44be-9bfd-fe3ca9c9c495', path: '', url: 'http://104.198.30.248:8080/mywebapp/')], contextPath: null, war: '**/*war'
-            }
+            }   # Деплоим на сервер tomcat
         }
        
     }
